@@ -3,7 +3,7 @@ import json
 import streamlit as st
 from src import (
     DatiPila, PRESET_CD, RHO_ACQUA_DEFAULT, MU_ACQUA_DEFAULT,
-    valida_dati, tabella_sintesi, figura_geometria,
+    valida_dati, tabella_sintesi, figura_geometria_2d, figura_geometria_3d,
     figura_forza_vs_velocita, figura_forza_vs_profondita,
     commenti_automatici, export_inputs_json,
     forza_totale_n, forza_idrodinamica_n, forza_idrostatica_n, momento_ribaltante_nm,
@@ -32,8 +32,8 @@ DEFAULTS = {
 }
 
 st.set_page_config(page_title='Forza idrodinamica su pila da ponte', layout='wide')
-st.title('ForzaIdrodinamicaPila v1.0 - Spinta idrodinamica su pila da ponte')
-st.caption('App professionale per il predimensionamento della forza idrodinamica su pile da ponte con scelta della forma della pila e grafici Plotly.')
+st.title('ForzaIdrodinamicaPila v1.1 - Spinta idrodinamica su pila da ponte')
+st.caption('Versione 1.1: rappresentazione 2D coerente della forma reale e vista 3D della pila con grafici Plotly.')
 
 with st.sidebar:
     st.header('Import / Export input')
@@ -94,8 +94,6 @@ with st.sidebar:
     else:
         delta_livello_idrostatico_m = 0.0
 
-# costruzione dati
-
 d = DatiPila(
     forma=forma,
     diametro_m=diametro_m,
@@ -131,7 +129,6 @@ M_kNm = momento_ribaltante_nm(d) / 1000.0
 
 df = tabella_sintesi(d)
 note = commenti_automatici(d)
-current_inputs = d.__dict__.copy()
 
 c1, c2, c3, c4 = st.columns(4)
 c1.metric('Forza idrodinamica [kN]', f"{Fid_kN:.1f}")
@@ -139,17 +136,18 @@ c2.metric('Forza idrostatica [kN]', f"{Fidr_kN:.1f}")
 c3.metric('Forza totale [kN]', f"{Ftot_kN:.1f}")
 c4.metric('Momento ribaltante [kNm]', f"{M_kNm:.1f}")
 
-t1, t2, t3, t4 = st.tabs(['Sintesi', 'Geometria Plotly', 'Grafici Plotly', 'Note tecniche'])
+t1, t2, t3, t4 = st.tabs(['Sintesi', 'Geometria 2D Plotly', 'Forma 3D Plotly', 'Grafici + note'])
 with t1:
     st.dataframe(df, use_container_width=True)
     st.download_button('Scarica sintesi CSV', df.to_csv(index=False).encode('utf-8'), 'forza_idrodinamica_pila_sintesi.csv', 'text/csv')
     st.download_button('Salva input JSON', export_inputs_json(d), 'forza_idrodinamica_pila_input.json', 'application/json')
 with t2:
-    st.plotly_chart(figura_geometria(d), use_container_width=True)
+    st.plotly_chart(figura_geometria_2d(d), use_container_width=True)
 with t3:
+    st.plotly_chart(figura_geometria_3d(d), use_container_width=True)
+with t4:
     st.plotly_chart(figura_forza_vs_velocita(d), use_container_width=True)
     st.plotly_chart(figura_forza_vs_profondita(d), use_container_width=True)
-with t4:
     for n in note:
         st.markdown(f'- {n}')
-    st.info('Questa app è pensata per il predimensionamento della spinta idrodinamica su pila da ponte. Per verifiche definitive si raccomanda il coordinamento con criteri progettuali, modellazioni idrauliche di dettaglio e linee guida adottate nel progetto.')
+    st.info('La v1.1 corregge la rappresentazione grafica della forma: la vista in pianta e la vista frontale sono ora coerenti con la geometria realmente selezionata e con l’angolo di attacco del flusso.')
