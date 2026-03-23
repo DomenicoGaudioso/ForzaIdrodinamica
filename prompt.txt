@@ -1,0 +1,86 @@
+Sviluppare e mantenere una web app professionale in Python e Streamlit per il calcolo e il predimensionamento della forza idrodinamica su una pila da ponte.
+
+OBIETTIVO GENERALE
+L'app deve consentire all'utente di stimare la forza idrodinamica e il momento ribaltante su una pila da ponte investita da una corrente, con possibilità di selezionare forme geometriche differenti e di esaminare la sensibilità del risultato rispetto ai parametri idraulici.
+
+STANDARD DELLA SUITE
+- Tutta la logica di calcolo in `src.py`
+- `app.py` contiene solo UI Streamlit, orchestrazione e visualizzazione risultati
+- Tutti i grafici devono essere realizzati esclusivamente con Plotly
+- L’interfaccia deve essere interamente in italiano
+- La struttura file deve essere sempre:
+  - app.py
+  - src.py
+  - requirements.txt
+  - README.md
+  - prompt.txt
+
+REQUISITI FUNZIONALI MINIMI
+1. Input geometrici:
+   - scelta della forma della pila;
+   - supporto ad almeno: circolare, rettangolare, ellittica, rettangolare con prua semicircolare;
+   - dimensioni geometriche coerenti con la forma;
+   - altezza utile della pila;
+   - profondità della corrente.
+
+2. Input idraulici:
+   - velocità media della corrente;
+   - densità del fluido;
+   - viscosità dinamica;
+   - angolo di attacco del flusso.
+
+3. Coefficienti:
+   - criterio per Cd: preset interno o manuale;
+   - coefficiente di ostruzione / debris factor;
+   - coefficiente di sicurezza.
+
+4. Momento e contributi aggiuntivi:
+   - quota del punto di riferimento per il momento;
+   - eventuale contributo idrostatico differenziale opzionale.
+
+5. Output richiesti:
+   - larghezza proiettata;
+   - area proiettata immersa;
+   - pressione dinamica;
+   - Reynolds e Froude;
+   - forza idrodinamica;
+   - forza idrostatica opzionale;
+   - forza totale;
+   - momento ribaltante;
+   - tabelle di sintesi;
+   - grafico Plotly della geometria;
+   - grafico Plotly forza vs velocità;
+   - grafico Plotly forza vs profondità;
+   - esportazione CSV;
+   - salvataggio e reimportazione input JSON.
+
+REQUISITI DI CODICE
+- usare dataclass per gli input;
+- separare validazione, geometria, idraulica, tabelle, grafici e commenti;
+- usare funzioni piccole, leggibili e testabili;
+- non scrivere formule direttamente in `app.py`;
+- il codice deve essere professionale, modulare ed estendibile.
+
+REQUISITI UI/UX
+- layout wide;
+- sidebar per input;
+- metriche in alto;
+- tab dedicate almeno a:
+  - Sintesi
+  - Geometria Plotly
+  - Grafici Plotly
+  - Note tecniche
+- linguaggio tecnico-professionale in italiano.
+
+NOTE METODOLOGICHE
+- L’app deve essere presentata come strumento di **predimensionamento tecnico**.
+- I preset di Cd devono essere esplicitamente descritti come **preset interni orientativi** e non come valori normativi definitivi.
+- La documentazione deve chiarire che i risultati dipendono in modo sensibile da forma, Reynolds, rugosità, debris e dettagli geometrici.
+
+QUALITÀ ATTESA
+La qualità attesa è di livello professionale. La v1.0 deve costituire una base seria per evoluzioni future come:
+- supporto a pile a sezione composta o a gruppi di pile;
+- distribuzioni non uniformi di velocità in profondità;
+- effetti combinati di drag, lift e impatti da debris;
+- report PDF automatico;
+- collegamento con verifiche strutturali delle sottostrutture.
