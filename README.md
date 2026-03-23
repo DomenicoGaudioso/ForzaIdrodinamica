@@ -1,5 +1,5 @@
 # ForzaIdrodinamicaPila v1.1
-
+![Testo alternativo](socialFIdrPila.png)
 Web app professionale in **Python + Streamlit** per il **predimensionamento della forza idrodinamica su una pila da ponte**.
 
 ## Novità della v1.1
